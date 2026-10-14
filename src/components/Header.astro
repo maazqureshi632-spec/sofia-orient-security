@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/sos-logo.png';
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="site-header" data-header>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label={`${site.name} — home`}>
+      <Image src={logo} alt="" width={88} height={88} class="brand-logo" loading="eager" />
+      <span class="brand-text">
+        <span class="brand-name">Sofia Orient</span>
+        <span class="brand-sub">Security Services</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        {nav.map((item) => (
+          <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+      <div class="nav-actions">
+        <a class="btn btn--whatsapp nav-whatsapp" href={site.whatsapp.href} target="_blank" rel="noopener">
+          <Icon name="whatsapp" /> WhatsApp
+        </a>
+        <a class="btn btn--gold" href={site.phone.href}><Icon name="phone" /> {site.phone.display}</a>
+      </div>
+    </nav>
+
+    <a class="btn btn--gold header-call" href={site.phone.href} aria-label={`Call ${site.phone.display}`}>
+      <Icon name="phone" /><span>Call Now</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Menu</span>
+      <span class="menu-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = document.getElementById('site-nav');
+  const setOpen = (open: boolean) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    nav?.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
+  };
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || toggle?.getAttribute('aria-expanded') !== 'true') return;
+    const inside = nav?.contains(document.activeElement);
+    setOpen(false);
+    if (inside) toggle?.focus();
+  });
+  nav?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  matchMedia('(min-width: 1100px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 100; background: rgb(255 255 255 / 0.94);
+    backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid transparent; transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .site-header.is-scrolled { border-bottom-color: var(--line); box-shadow: 0 10px 30px -22px rgb(11 22 38 / 0.45); }
+  .header-inner { display: flex; align-items: center; gap: 16px; min-height: var(--header-h); }
+
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; margin-right: auto; flex-shrink: 0; }
+  .brand :global(.brand-logo) { width: 44px; height: 44px; border-radius: 50%; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.1; white-space: nowrap; }
+  .brand-name { font-family: var(--font-head); font-weight: 700; font-size: 1.08rem; color: var(--navy-900); letter-spacing: -0.01em; }
+  .brand-sub { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-ink); }
+
+  .site-nav ul { list-style: none; margin: 0; padding: 0; }
+  .site-nav ul a {
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; position: relative;
+    font-family: var(--font-head); font-weight: 500; font-size: 0.9rem; color: var(--charcoal); text-decoration: none; white-space: nowrap;
+  }
+  .site-nav ul a:hover { color: var(--navy-900); }
+  .site-nav ul a[aria-current='page'] { color: var(--navy-900); font-weight: 600; }
+
+  .menu-toggle {
+    display: grid; place-items: center; width: 46px; height: 46px; border-radius: var(--radius-s);
+    border: 1px solid var(--line); background: var(--white); color: var(--navy-900); cursor: pointer;
+  }
+  .menu-bars { display: grid; gap: 5px; }
+  .menu-bars span { display: block; width: 20px; height: 2px; background: currentColor; border-radius: 2px; transition: transform 0.3s var(--ease), opacity 0.2s; }
+  .menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(2) { opacity: 0; }
+  .menu-toggle[aria-expanded='true'] .menu-bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .header-call span { display: none; }
+  .header-call { padding: 0 14px; }
+  @media (min-width: 480px) { .header-call span { display: inline; } }
+
+  /* mobile & tablet: slide-down panel */
+  @media (max-width: 1099px) {
+    .site-nav {
+      position: fixed; inset: var(--header-h) 0 auto 0; z-index: 99; background: var(--white);
+      border-top: 1px solid var(--line); box-shadow: 0 24px 40px -24px rgb(11 22 38 / 0.4);
+      padding: 8px var(--gutter) 24px; max-height: calc(100dvh - var(--header-h)); overflow-y: auto;
+      visibility: hidden; opacity: 0; transform: translateY(-8px);
+      transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0s linear 0.25s;
+    }
+    .site-nav.is-open { visibility: visible; opacity: 1; transform: none; transition-delay: 0s; }
+    .site-nav ul a { width: 100%; min-height: 54px; font-size: 1.05rem; border-bottom: 1px solid var(--line); padding: 0 4px; }
+    .site-nav ul a[aria-current='page'] { color: var(--gold-ink); }
+    .nav-actions { display: grid; gap: 10px; margin-top: 20px; }
+  }
+
+  /* desktop: inline nav */
+  @media (min-width: 1100px) {
+    .menu-toggle, .header-call { display: none; }
+    .site-nav { display: flex; align-items: center; gap: 18px; }
+    .site-nav ul { display: flex; gap: 2px; }
+    .site-nav ul a::after {
+      content: ''; position: absolute; left: 10px; right: 10px; bottom: 8px; height: 2px; border-radius: 2px;
+      background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.3s var(--ease);
+    }
+    .site-nav ul a:hover::after, .site-nav ul a[aria-current='page']::after { transform: scaleX(1); }
+    .nav-actions { display: flex; gap: 8px; }
+    .nav-actions .btn { white-space: nowrap; }
+    /* The content width is capped, so the desktop bar keeps one action; WhatsApp stays in the menu panel, hero, CTA band and footer. */
+    .nav-whatsapp { display: none; }
+  }
+  @media (min-width: 1100px) and (max-width: 1239px) { .site-nav { gap: 12px; } .site-nav ul a { padding: 0 7px; } .site-nav ul a::after { left: 7px; right: 7px; } }
+
+  :global(html:not(.js)) .menu-toggle { display: none; }
+  @media (max-width: 1099px) {
+    :global(html:not(.js)) .site-nav { position: static; visibility: visible; opacity: 1; transform: none; box-shadow: none; width: 100%; }
+    :global(html:not(.js)) .header-inner { flex-wrap: wrap; }
+  }
+</style>

@@ -1,0 +1,204 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import {
+  guardCriteria, supervisorCriteria, supervisorNote, verification, guardTraining, supervisorTraining,
+  controlRoom, checking, monitoring, jumpDeployment, reportingChannels, emergencyResponse, incidentChain, communication,
+} from '../data/company';
+---
+<Base
+  title="Training & Operations"
+  description="How Sofia Orient Security Services selects, verifies and trains guards, and how its control room, supervisory checks, reporting channels and emergency response work."
+>
+  <PageHero
+    crumb="Training & Operations"
+    eyebrow="Training & operations"
+    title="How our guards are selected, trained and supervised"
+    lead="The procedures below are taken from our company profile: who we recruit, how we verify them, the training they receive, and how our operations are supervised and reported."
+  >
+    <nav class="jump" aria-label="Sections on this page">
+      <a href="#selection">Selection</a><a href="#verification">Verification</a><a href="#training">Training</a><a href="#operations">Operations</a><a href="#emergency">Emergency response</a>
+    </nav>
+  </PageHero>
+
+  <!-- Selection -->
+  <section class="section" id="selection">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Step 1</p>
+        <h2>Selection criteria</h2>
+        <p>Guards and supervisors are selected against defined requirements.</p>
+      </div>
+      <div class="grid grid-2">
+        <div class="card reveal">
+          <span class="icon-badge"><Icon name="shield" /></span>
+          <h3>Guards</h3>
+          <ul class="check-list">{guardCriteria.map((c) => <li>{c}</li>)}</ul>
+        </div>
+        <div class="card reveal">
+          <span class="icon-badge"><Icon name="team" /></span>
+          <h3>Supervisors</h3>
+          <ul class="check-list">{supervisorCriteria.map((c) => <li>{c}</li>)}</ul>
+          <p class="card-note">{supervisorNote}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Verification -->
+  <section class="section section--mist" id="verification">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Step 2</p>
+        <h2>Verification procedure</h2>
+        <p>Every guard is verified three ways before deployment.</p>
+      </div>
+      <ol class="flow">
+        {verification.map((v, i) => (
+          <li class="flow-item reveal">
+            <span class="flow-num">{i + 1}</span>
+            <span class="icon-badge icon-badge--soft"><Icon name={v.icon} /></span>
+            <h3>{v.title}</h3>
+            <p>{v.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Training -->
+  <section class="section" id="training">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Step 3</p>
+        <h2>Training</h2>
+        <p>Firing training is carried out at the APSAA (All Pakistan Security Agencies Association) Training School. Supervisors complete the guard courses and additional supervisory courses.</p>
+      </div>
+      <div class="split training">
+        <div class="reveal">
+          <h3 class="sub">Guards</h3>
+          <ul class="course-list">
+            {guardTraining.map((t) => <li><span class="icon-badge icon-badge--soft"><Icon name={t.icon} /></span>{t.title}</li>)}
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3 class="sub">Supervisors <span class="sub-note">— in addition to all guard courses</span></h3>
+          <ul class="course-list">
+            {supervisorTraining.map((t) => <li><span class="icon-badge icon-badge--soft"><Icon name={t.icon} /></span>{t.title}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Operations -->
+  <section class="section section--dark" id="operations">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Operations</p>
+        <h2>Control room, checking and monitoring</h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="dark-card reveal">
+          <h3><Icon name="control" /> Control room</h3>
+          <ul class="check-list">{controlRoom.map((c) => <li>{c}</li>)}</ul>
+        </div>
+        <div class="dark-card reveal">
+          <h3><Icon name="clock" /> Checking procedure</h3>
+          <ul class="schedule">
+            {checking.map((c) => <li><span class="s-when">{c.when}</span><span class="s-who">{c.who}</span></li>)}
+          </ul>
+        </div>
+        <div class="dark-card reveal">
+          <h3><Icon name="eye" /> Monitoring policy</h3>
+          <ul class="check-list">{monitoring.map((c) => <li>{c}</li>)}</ul>
+        </div>
+        <div class="dark-card reveal">
+          <h3><Icon name="route" /> Jump guard deployment</h3>
+          <ol class="mini-steps">{jumpDeployment.map((c) => <li>{c}</li>)}</ol>
+        </div>
+        <div class="dark-card reveal">
+          <h3><Icon name="send" /> Reporting channels</h3>
+          <ul class="check-list">{reportingChannels.map((c) => <li>{c}</li>)}</ul>
+        </div>
+        <div class="dark-card reveal">
+          <h3><Icon name="radio" /> Communication</h3>
+          <ul class="check-list">{communication.map((c) => <li>{c}</li>)}</ul>
+          <p class="dark-note">Guards carry Motorola P110 portable radios; walkie-talkies are provided to armed guards where required, and mobile vehicles, checking and deployment officers stay in contact through a base station and mobile phones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency -->
+  <section class="section" id="emergency">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Emergencies</p>
+        <h2>Emergency response &amp; incident reporting</h2>
+      </div>
+      <ol class="em-steps">
+        {emergencyResponse.map((e, i) => (
+          <li class="reveal">
+            <span class="em-num">{i + 1}</span>
+            <span class="em-icon"><Icon name={e.icon} /></span>
+            <div><h3>{e.title}</h3><p>{e.text}</p></div>
+          </li>
+        ))}
+      </ol>
+      <div class="chain reveal">
+        <p class="chain-title">Incident reporting chain</p>
+        <ol>{incidentChain.map((c) => <li>{c}</li>)}</ol>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .jump a { padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; color: rgb(255 255 255 / 0.85); text-decoration: none; font-size: 0.88rem; }
+  .jump a:hover { border-color: var(--gold); color: var(--white); }
+  .card-note { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.94rem; }
+
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .flow-item { position: relative; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+  .flow-num { position: absolute; top: 22px; right: 24px; font-family: var(--font-head); font-weight: 700; font-size: 1.5rem; color: var(--numeral); }
+  .flow-item p { margin: 0; color: var(--slate); }
+
+  .sub { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin-bottom: 16px; }
+  .sub-note { font-family: var(--font-body); font-size: 0.9rem; font-weight: 400; color: var(--slate); }
+  .course-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .course-list li { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); font-family: var(--font-head); font-weight: 600; color: var(--navy-900); }
+  .course-list .icon-badge { margin: 0; width: 42px; height: 42px; }
+  @media (min-width: 900px) { .training { grid-template-columns: 1fr 1fr; } }
+
+  .dark-card { background: var(--navy-800); border: 1px solid var(--line-dark); border-radius: var(--radius); padding: clamp(22px, 2.6vw, 30px); }
+  .dark-card h3 { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .dark-card h3 :global(svg) { width: 24px; height: 24px; color: var(--gold); flex: none; }
+  .dark-card .check-list { color: rgb(255 255 255 / 0.82); }
+  .dark-note { margin: 18px 0 0; font-size: 0.92rem; color: rgb(255 255 255 / 0.68); }
+  .schedule { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .schedule li { display: flex; flex-direction: column; padding: 12px 16px; border-left: 3px solid var(--gold); background: rgb(255 255 255 / 0.04); border-radius: 6px; }
+  .s-when { color: var(--white); font-weight: 600; font-family: var(--font-head); }
+  .s-who { font-size: 0.9rem; color: rgb(255 255 255 / 0.66); }
+  .mini-steps { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; color: rgb(255 255 255 / 0.82); }
+  .mini-steps li::marker { color: var(--gold); font-weight: 700; }
+
+  .em-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .em-steps li { display: grid; grid-template-columns: auto auto 1fr; gap: 16px; align-items: center; padding: 18px 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--white); box-shadow: var(--shadow); }
+  .em-num { font-family: var(--font-head); font-weight: 700; color: var(--gold-ink); font-size: 1.1rem; width: 1.2em; }
+  .em-icon { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--navy-900); color: var(--gold); }
+  .em-icon :global(svg) { width: 22px; height: 22px; }
+  .em-steps h3 { margin: 0 0 2px; font-size: 1.05rem; }
+  .em-steps p { margin: 0; color: var(--slate); font-size: 0.96rem; }
+
+  .chain { margin-top: 32px; padding: clamp(22px, 3vw, 30px); border-radius: var(--radius); background: var(--mist); }
+  .chain-title { font-family: var(--font-head); font-weight: 600; color: var(--navy-900); margin: 0 0 16px; }
+  .chain ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .chain li { padding: 9px 14px; border-radius: var(--radius-s); background: var(--white); border: 1px solid var(--line); font-size: 0.93rem; font-weight: 500; color: var(--navy-900); }
+  .chain li:not(:last-child)::after { content: '→'; margin-left: 14px; color: var(--gold-ink); }
+</style>

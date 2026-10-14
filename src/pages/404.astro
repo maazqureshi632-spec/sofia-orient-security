@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site, nav } from '../data/site';
+---
+<Base title="Page not found" description="The page you were looking for could not be found." noindex>
+  <section class="nf">
+    <div class="grid-lines" aria-hidden="true"></div>
+    <div class="container nf-inner">
+      <p class="eyebrow">Error 404</p>
+      <h1>Page not found</h1>
+      <p class="nf-lead">The page you were looking for does not exist or may have moved. Try one of the pages below, or contact us directly.</p>
+      <div class="btn-row">
+        <a class="btn btn--gold" href="/">Go to the home page</a>
+        <a class="btn btn--ghost" href={site.phone.href}><Icon name="phone" /> Call {site.phone.display}</a>
+      </div>
+      <nav aria-label="Site pages" class="nf-links">
+        <ul>{nav.filter((n) => n.href !== '/').map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+      </nav>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { position: relative; overflow: hidden; background: var(--navy-900); color: rgb(255 255 255 / 0.78); padding: clamp(72px, 12vw, 140px) 0; }
+  .nf-inner { position: relative; }
+  .nf h1 { color: var(--white); }
+  .nf .eyebrow { color: var(--gold-soft); }
+  .nf-lead { max-width: 560px; font-size: 1.1rem; margin: 0 0 28px; }
+  .nf-links ul { list-style: none; margin: 40px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .nf-links a { display: inline-block; padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; color: rgb(255 255 255 / 0.85); text-decoration: none; font-size: 0.9rem; }
+  .nf-links a:hover { border-color: var(--gold); color: var(--white); }
+</style>

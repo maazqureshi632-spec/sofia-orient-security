@@ -1,0 +1,35 @@
+# Sofia Orient Security Services - Apache / Hostinger settings for the static site.
+# HTTPS is not forced here; add the redirect once SSL is confirmed active on the domain.
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  # Built CSS, JS, fonts and optimised images have hashed names: cache for a year.
+  <FilesMatch "\.(css|js|woff2|webp|avif)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  # Other images (e.g. the social preview image) keep a fixed name: cache for 30 days.
+  <FilesMatch "\.(png|jpe?g|svg|ico)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+  # Pages should always be revalidated so updates show immediately.
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript text/javascript application/json application/xml image/svg+xml text/plain
+</IfModule>

@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/brand/sos-logo.png';
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+import { services } from '../data/company';
+---
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="footer-logo" href="/">
+        <Image src={logo} alt="" width={112} height={112} class="footer-logo-img" />
+        <span>{site.legalName}</span>
+      </a>
+      <p>Private security services in Karachi: trained and verified guards, escort services, security and communication equipment, and video digital surveillance.</p>
+    </div>
+
+    <nav class="footer-col" aria-label="Footer">
+      <p class="footer-heading">Company</p>
+      <ul>{nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}</ul>
+    </nav>
+
+    <div class="footer-col">
+      <p class="footer-heading">Services</p>
+      <ul>{services.map((s) => <li><a href={`/services/#${s.slug}`}>{s.title}</a></li>)}</ul>
+    </div>
+
+    <div class="footer-col">
+      <p class="footer-heading">Contact</p>
+      <ul class="footer-contact">
+        <li><a href={site.phone.href}><Icon name="phone" /> {site.phone.display}</a></li>
+        <li><a href={site.whatsapp.href} target="_blank" rel="noopener"><Icon name="whatsapp" /> WhatsApp {site.whatsapp.display}</a></li>
+        <li><a href="/contact/#quote"><Icon name="doc" /> Request a quote</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-base">
+    <p>© {new Date().getFullYear()} {site.legalName} All rights reserved.</p>
+    <p>Karachi, Pakistan</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--navy-950); color: rgb(255 255 255 / 0.7); padding-top: clamp(56px, 7vw, 80px); }
+  .footer-grid { display: grid; gap: 36px; grid-template-columns: 1fr; }
+  @media (min-width: 720px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .footer-grid { grid-template-columns: 1.5fr 1fr 1.1fr 1.2fr; gap: 48px; } }
+  .footer-logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; color: var(--white); font-family: var(--font-head); font-weight: 600; font-size: 1.02rem; max-width: 300px; line-height: 1.3; }
+  .footer-logo :global(.footer-logo-img) { width: 56px; height: 56px; border-radius: 50%; flex: none; }
+  .footer-brand p { margin: 18px 0 0; max-width: 40ch; font-size: 0.95rem; }
+  .footer-heading { font-family: var(--font-head); font-size: 0.76rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-soft); margin: 0 0 12px; }
+  .footer-col ul { list-style: none; margin: 0; padding: 0; }
+  .footer-col a { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; color: rgb(255 255 255 / 0.78); text-decoration: none; font-size: 0.95rem; }
+  .footer-col a:hover { color: var(--white); text-decoration: underline; text-decoration-color: var(--gold); }
+  .footer-contact :global(svg) { width: 18px; height: 18px; color: var(--gold); flex: none; }
+  .footer-base { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; border-top: 1px solid var(--line-dark); margin-top: 48px; padding: 22px 0 28px; font-size: 0.86rem; }
+  .footer-base p { margin: 0; }
+  @media (max-width: 1099px) { .site-footer { padding-bottom: 72px; } }
+</style>

@@ -1,0 +1,250 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import { site, whatsappLink } from '../data/site';
+import { services } from '../data/company';
+---
+<Base
+  title="Contact & Quote"
+  description={`Contact Sofia Orient Security Services in Karachi. Call ${site.phone.display}, message us on WhatsApp at ${site.whatsapp.display}, or send a quote request for security guards and related services.`}
+>
+  <PageHero
+    crumb="Contact"
+    eyebrow="Contact"
+    title="Talk to us about your security requirement"
+    lead="Call us, message us on WhatsApp, or fill in the quote request below and send it to us through WhatsApp."
+  />
+
+  <section class="section">
+    <div class="container contact-grid">
+      <div class="channels">
+        <a class="channel card card--hover reveal" href={site.phone.href}>
+          <span class="icon-badge"><Icon name="phone" /></span>
+          <span class="ch-label">Call</span>
+          <span class="ch-value">{site.phone.display}</span>
+          <span class="text-link">Call now <Icon name="arrow" /></span>
+        </a>
+        <a class="channel card card--hover reveal" href={whatsappLink('Hello, I would like to discuss security services.')} target="_blank" rel="noopener">
+          <span class="icon-badge ch-wa"><Icon name="whatsapp" /></span>
+          <span class="ch-label">WhatsApp</span>
+          <span class="ch-value">{site.whatsapp.display}</span>
+          <span class="text-link">Open chat <Icon name="arrow" /></span>
+        </a>
+        <div class="channel card reveal">
+          <span class="icon-badge icon-badge--soft"><Icon name="home" /></span>
+          <span class="ch-label">Location</span>
+          <span class="ch-value">{site.city}, {site.country}</span>
+          <span class="ch-text">Office address available on request.</span>
+        </div>
+      </div>
+
+      <div class="form-card reveal" id="quote">
+        <h2>Request a quote</h2>
+        <p class="form-intro">Fields marked <span aria-hidden="true">*</span><span class="sr-only">with an asterisk</span> are required. When you submit, WhatsApp opens with your details filled in. <strong>Your request reaches us only after you press Send in WhatsApp.</strong></p>
+
+        <form class="form" data-quote-form novalidate>
+          <div class="field">
+            <label for="q-name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input id="q-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="q-name-err" />
+            <p class="err" id="q-name-err" data-err-for="name"></p>
+          </div>
+
+          <div class="field">
+            <label for="q-phone">Phone number <span class="req" aria-hidden="true">*</span></label>
+            <input id="q-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" placeholder="e.g. 0300 1234567" aria-describedby="q-phone-hint q-phone-err" />
+            <p class="hint" id="q-phone-hint">Pakistani mobile or landline, or an international number starting with +.</p>
+            <p class="err" id="q-phone-err" data-err-for="phone"></p>
+          </div>
+
+          <div class="field">
+            <label for="q-org">Organisation <span class="opt">(optional)</span></label>
+            <input id="q-org" name="organisation" type="text" autocomplete="organization" maxlength="100" />
+          </div>
+
+          <div class="field">
+            <label for="q-service">Service <span class="req" aria-hidden="true">*</span></label>
+            <select id="q-service" name="service" required aria-describedby="q-service-err">
+              <option value="">Select a service</option>
+              {services.map((s) => <option value={s.slug}>{s.title}</option>)}
+              <option value="other">Other / not sure</option>
+            </select>
+            <p class="err" id="q-service-err" data-err-for="service"></p>
+          </div>
+
+          <div class="field">
+            <label for="q-location">Location of premises <span class="req" aria-hidden="true">*</span></label>
+            <input id="q-location" name="location" type="text" required maxlength="120" placeholder="Area and city, e.g. SITE, Karachi" aria-describedby="q-location-err" />
+            <p class="err" id="q-location-err" data-err-for="location"></p>
+          </div>
+
+          <div class="field">
+            <label for="q-guards">Number of guards <span class="opt">(optional)</span></label>
+            <input id="q-guards" name="guards" type="text" inputmode="numeric" maxlength="20" placeholder="If known" />
+          </div>
+
+          <div class="field field--full">
+            <label for="q-message">Details <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="q-message" name="message" rows="5" required maxlength="1000" placeholder="Type of premises, shifts or timings, start date and anything else we should know" aria-describedby="q-message-err"></textarea>
+            <p class="err" id="q-message-err" data-err-for="message"></p>
+          </div>
+
+          <div class="field--full form-actions">
+            <button type="submit" class="btn btn--whatsapp"><Icon name="whatsapp" /> Continue in WhatsApp</button>
+            <p class="form-alt">Prefer to talk? <a href={site.phone.href}>Call {site.phone.display}</a></p>
+          </div>
+
+          <div class="field--full status" data-status role="status" aria-live="polite" tabindex="-1" hidden></div>
+        </form>
+
+        <noscript>
+          <p class="note">The quote form needs JavaScript. Please call <a href={site.phone.href}>{site.phone.display}</a> or message us on WhatsApp at <a href={site.whatsapp.href}>{site.whatsapp.display}</a>.</p>
+        </noscript>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-grid { display: grid; gap: clamp(24px, 4vw, 48px); align-items: start; }
+  @media (min-width: 980px) { .contact-grid { grid-template-columns: 340px 1fr; } }
+  .channels { display: grid; gap: 16px; }
+  @media (min-width: 640px) and (max-width: 979px) { .channels { grid-template-columns: repeat(3, 1fr); } }
+  .channel { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+  .channel .icon-badge { margin-bottom: 14px; }
+  .ch-wa { background: var(--whatsapp); color: var(--white); }
+  .ch-label { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); }
+  .ch-value { font-family: var(--font-head); font-weight: 600; font-size: 1.15rem; color: var(--navy-900); margin: 2px 0 10px; }
+  .ch-text { font-size: 0.93rem; color: var(--slate); }
+
+  .form-card { padding: clamp(24px, 4vw, 44px); border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--white); box-shadow: var(--shadow); scroll-margin-top: calc(var(--header-h) + 16px); }
+  .form-card h2 { margin-bottom: 0.3em; }
+  .form-intro { margin: 0 0 26px; color: var(--slate); font-size: 0.95rem; }
+  .form { display: grid; gap: 18px 20px; }
+  @media (min-width: 680px) { .form { grid-template-columns: 1fr 1fr; } .field--full { grid-column: 1 / -1; } }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-weight: 600; font-size: 0.93rem; color: var(--navy-900); }
+  .req { color: var(--danger); }
+  .opt { font-weight: 400; color: var(--slate); }
+  .field input, .field select, .field textarea {
+    width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid #cfd5df; border-radius: var(--radius-s);
+    background: var(--white); font: inherit; color: var(--charcoal);
+  }
+  .field textarea { resize: vertical; min-height: 130px; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--navy-700); outline: 3px solid var(--gold); outline-offset: 1px; }
+  .field [aria-invalid='true'] { border-color: var(--danger); background: #fff8f8; }
+  .hint { margin: 0; font-size: 0.83rem; color: var(--slate); }
+  .err { margin: 0; font-size: 0.86rem; font-weight: 500; color: var(--danger); }
+  .err:empty { display: none; }
+  .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 6px; }
+  .form-alt { margin: 0; font-size: 0.93rem; color: var(--slate); }
+  .status { padding: 16px 18px; border-radius: var(--radius-s); font-size: 0.95rem; }
+  .status:focus { outline: none; }
+  .status[data-kind='info'] { background: var(--gold-tint); border: 1px solid #efe1b2; color: var(--charcoal); }
+  .status[data-kind='error'] { background: #fff4f4; border: 1px solid #f2c9c9; color: var(--charcoal); }
+  .status p { margin: 0 0 6px; }
+  .status p:last-child { margin: 0; }
+</style>
+
+<script>
+  import { site } from '../data/site';
+  import { services } from '../data/company';
+
+  const form = document.querySelector<HTMLFormElement>('[data-quote-form]');
+  const statusEl = form?.querySelector<HTMLElement>('[data-status]');
+  const serviceTitles: Record<string, string> = Object.fromEntries(services.map((s) => [s.slug, s.title]));
+  serviceTitles.other = 'Other / not sure';
+
+  // Pre-select a service when arriving from a "Request a quote" link (?service=slug).
+  const pre = new URLSearchParams(location.search).get('service');
+  const select = form?.querySelector<HTMLSelectElement>('#q-service');
+  if (pre && select && serviceTitles[pre]) select.value = pre;
+
+  const field = (name: string) => form?.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+  const value = (name: string) => (field(name)?.value ?? '').trim();
+
+  function validPhone(raw: string): boolean {
+    const compact = raw.replace(/[\s\-().]/g, '');
+    if (!/^\+?\d+$/.test(compact)) return false;
+    const digits = compact.replace(/^\+/, '');
+    if (compact.startsWith('+')) return digits.length >= 8 && digits.length <= 15;
+    if (digits.startsWith('92')) return digits.length === 12;
+    if (digits.startsWith('03')) return digits.length === 11; // mobile
+    if (digits.startsWith('0')) return digits.length >= 9 && digits.length <= 11; // landline with area code
+    return false;
+  }
+
+  const rules: Record<string, (v: string) => string> = {
+    name: (v) => (v.length < 2 ? 'Please enter your name.' : ''),
+    phone: (v) => (!v ? 'Please enter a phone number we can reach you on.' : validPhone(v) ? '' : 'Please enter a valid phone number, e.g. 0300 1234567 or +92 300 1234567.'),
+    service: (v) => (!v ? 'Please select a service.' : ''),
+    location: (v) => (v.length < 3 ? 'Please tell us where the premises are.' : ''),
+    message: (v) => (v.length < 10 ? 'Please add a few details about your requirement (at least 10 characters).' : ''),
+  };
+
+  function check(name: string): boolean {
+    const el = field(name);
+    const errEl = form?.querySelector<HTMLElement>(`[data-err-for="${name}"]`);
+    const msg = rules[name](value(name));
+    if (el) el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    if (errEl) errEl.textContent = msg;
+    return !msg;
+  }
+
+  // Re-validate a field once the visitor has interacted with it.
+  for (const name of Object.keys(rules)) {
+    const el = field(name);
+    el?.addEventListener('blur', () => { if (value(name) || el.getAttribute('aria-invalid')) check(name); });
+    el?.addEventListener('input', () => { if (el.getAttribute('aria-invalid') === 'true') check(name); });
+    el?.addEventListener('change', () => { if (el.getAttribute('aria-invalid') === 'true') check(name); });
+  }
+
+  function buildMessage(): string {
+    const lines = [
+      'Quote request – Sofia Orient Security Services website',
+      '',
+      `Name: ${value('name')}`,
+      `Phone: ${value('phone')}`,
+    ];
+    if (value('organisation')) lines.push(`Organisation: ${value('organisation')}`);
+    lines.push(`Service: ${serviceTitles[value('service')] ?? value('service')}`);
+    lines.push(`Location: ${value('location')}`);
+    if (value('guards')) lines.push(`Number of guards: ${value('guards')}`);
+    lines.push('', 'Details:', value('message'));
+    return lines.join('\n');
+  }
+
+  function showStatus(kind: 'info' | 'error', html: string) {
+    if (!statusEl) return;
+    statusEl.dataset.kind = kind;
+    statusEl.innerHTML = html;
+    statusEl.hidden = false;
+    statusEl.focus();
+  }
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const results = Object.keys(rules).map((n) => [n, check(n)] as const);
+    const firstBad = results.find(([, ok]) => !ok);
+    if (firstBad) {
+      if (statusEl) statusEl.hidden = true;
+      field(firstBad[0])?.focus();
+      return;
+    }
+
+    const url = `${site.whatsapp.href}?text=${encodeURIComponent(buildMessage())}`;
+    const win = window.open(url, '_blank');
+    if (win) win.opener = null;
+    const link = `<a href="${url}" target="_blank" rel="noopener">open WhatsApp with your message</a>`;
+    if (win === null) {
+      // Pop-up blocked: nothing has been opened, so ask the visitor to open it themselves.
+      showStatus('info',
+        `<p><strong>Your request has not been sent yet.</strong> Please ${link} and press Send.</p>` +
+        `<p>If WhatsApp is not available, call us on <a href="${site.phone.href}">${site.phone.display}</a>.</p>`);
+    } else {
+      showStatus('info',
+        `<p><strong>WhatsApp should now be open with your message.</strong> Your request reaches us only after you press Send in WhatsApp.</p>` +
+        `<p>If WhatsApp did not open, ${link}, or call us on <a href="${site.phone.href}">${site.phone.display}</a>.</p>`);
+    }
+  });
+</script>

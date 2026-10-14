@@ -1,0 +1,31 @@
+---
+// Fixed contact bar for phones and tablets: Call, WhatsApp and Quote always one tap away.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+<div class="mobile-actions" role="navigation" aria-label="Quick contact">
+  <a href={site.phone.href} class="ma ma--call"><Icon name="phone" /><span>Call</span></a>
+  <a href={site.whatsapp.href} class="ma ma--wa" target="_blank" rel="noopener"><Icon name="whatsapp" /><span>WhatsApp</span></a>
+  <a href="/contact/#quote" class="ma ma--quote"><Icon name="doc" /><span>Get a Quote</span></a>
+</div>
+
+<style>
+  .mobile-actions {
+    position: fixed; inset: auto 0 0 0; z-index: 90; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px; padding: 8px max(8px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));
+    background: rgb(255 255 255 / 0.96); border-top: 1px solid var(--line); backdrop-filter: blur(10px);
+  }
+  .ma {
+    display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 6px; border-radius: var(--radius-s); white-space: nowrap;
+    font-family: var(--font-head); font-weight: 600; font-size: 0.88rem; text-decoration: none;
+  }
+  .ma :global(svg) { width: 18px; height: 18px; flex: none; }
+  .ma--call { background: var(--gold); color: var(--navy-950); }
+  .ma--wa { background: var(--whatsapp); color: var(--white); }
+  .ma--quote { background: var(--navy-900); color: var(--white); }
+  /* Narrow phones: the Quote label needs the room more than its icon does. */
+  @media (max-width: 399px) { .ma { gap: 6px; } .ma--quote :global(svg) { display: none; } }
+  .ma:hover { filter: brightness(1.06); }
+  :global(body.menu-open) .mobile-actions { display: none; }
+  @media (min-width: 1100px) { .mobile-actions { display: none; } }
+</style>

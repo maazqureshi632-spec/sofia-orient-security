@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/company';
+import { whatsappLink } from '../data/site';
+---
+<Base
+  title="Security Services"
+  description="Security guards, escort services, security equipment, communication equipment and video digital surveillance from Sofia Orient Security Services, Karachi."
+>
+  <PageHero
+    crumb="Services"
+    eyebrow="Our services"
+    title="Security services for your premises"
+    lead="Five services, delivered by guards who are selected, verified and trained to defined standards, and supported by supervisors and a control room manned round the clock."
+  >
+    <nav class="jump" aria-label="Services on this page">
+      {services.map((s) => <a href={`#${s.slug}`}>{s.title}</a>)}
+    </nav>
+  </PageHero>
+
+  <section class="section">
+    <div class="container service-list">
+      {services.map((s, i) => (
+        <article class="service reveal" id={s.slug}>
+          <div class="service-head">
+            <span class="icon-badge"><Icon name={s.icon} /></span>
+            <span class="service-num">0{i + 1}</span>
+          </div>
+          <div class="service-body">
+            <h2>{s.title}</h2>
+            <p class="lead">{s.summary}</p>
+            <ul class="check-list">{s.points.map((p) => <li>{p}</li>)}</ul>
+            <div class="btn-row">
+              <a class="btn btn--navy" href={`/contact/?service=${s.slug}#quote`}>Request a quote</a>
+              <a class="btn btn--outline" href={whatsappLink(`Hello, I would like to discuss ${s.title.toLowerCase()}.`)} target="_blank" rel="noopener"><Icon name="whatsapp" /> Ask on WhatsApp</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--mist">
+    <div class="container grid grid-3">
+      <a class="card card--hover link-card reveal" href="/training-operations/#selection">
+        <span class="icon-badge icon-badge--soft"><Icon name="id" /></span>
+        <h3>Selection &amp; verification</h3>
+        <p>The criteria our guards and supervisors must meet, and how they are verified.</p>
+        <span class="text-link">Read more <Icon name="arrow" /></span>
+      </a>
+      <a class="card card--hover link-card reveal" href="/training-operations/#training">
+        <span class="icon-badge icon-badge--soft"><Icon name="book" /></span>
+        <h3>Training</h3>
+        <p>Courses for guards and additional courses for supervisors.</p>
+        <span class="text-link">Read more <Icon name="arrow" /></span>
+      </a>
+      <a class="card card--hover link-card reveal" href="/training-operations/#operations">
+        <span class="icon-badge icon-badge--soft"><Icon name="control" /></span>
+        <h3>Operations</h3>
+        <p>Control room, checking schedule, reporting channels and emergency response.</p>
+        <span class="text-link">Read more <Icon name="arrow" /></span>
+      </a>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .jump a { padding: 8px 14px; border: 1px solid var(--line-dark); border-radius: 999px; color: rgb(255 255 255 / 0.85); text-decoration: none; font-size: 0.88rem; }
+  .jump a:hover { border-color: var(--gold); color: var(--white); }
+  .service-list { display: grid; gap: clamp(20px, 3vw, 32px); }
+  .service { display: grid; gap: 20px; padding: clamp(24px, 3.5vw, 40px); border: 1px solid var(--line); border-radius: var(--radius-l); background: var(--white); box-shadow: var(--shadow); scroll-margin-top: calc(var(--header-h) + 16px); }
+  @media (min-width: 820px) { .service { grid-template-columns: 120px 1fr; gap: 32px; } }
+  .service-head { display: flex; align-items: center; gap: 14px; }
+  @media (min-width: 820px) { .service-head { flex-direction: column; align-items: flex-start; } }
+  .service-head .icon-badge { margin: 0; width: 56px; height: 56px; }
+  .service-num { font-family: var(--font-head); font-weight: 700; font-size: 1.4rem; color: var(--numeral); }
+  .service-body h2 { font-size: clamp(1.4rem, 2.4vw, 1.8rem); }
+  .service-body .check-list { margin: 20px 0 26px; }
+  .link-card { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+  .link-card p { flex: 1; }
+</style>
